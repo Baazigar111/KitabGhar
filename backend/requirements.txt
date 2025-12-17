@@ -3,7 +3,4 @@ flask-cors
 flask-mysqldb
 bcrypt
 gunicorn
-python-multipart
-sqlalchemy
-fastapi
-uvicorn
+python-dotenv

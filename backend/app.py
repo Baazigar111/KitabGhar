@@ -3,13 +3,16 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 import bcrypt
-
 from db import mysql, init_db
 
 # -------------------------------
 # App setup
 # -------------------------------
-app = Flask(__name__)
+# We tell Flask that the static files (HTML/JS/CSS) are in the '../frontend' folder
+app = Flask(__name__, 
+            static_folder=os.path.join(os.getcwd(), "..", "frontend"), 
+            static_url_path="")
+
 CORS(app)
 
 # -------------------------------
@@ -20,6 +23,7 @@ init_db(app)
 # -------------------------------
 # Upload folder config
 # -------------------------------
+# Using absolute path for the uploads folder
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -27,21 +31,37 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # -------------------------------
-# Home route
+# Frontend Routes
 # -------------------------------
+
 @app.route("/")
-def home():
-    return "KitabGhar Backend Connected to MySQL"
+def serve_index():
+    """Serves the main index.html from the frontend folder"""
+    return send_from_directory(app.static_folder, "index.html")
+
+@app.route("/<path:path>")
+def serve_static(path):
+    """Serves other static files like login.html, css/style.css, etc."""
+    return send_from_directory(app.static_folder, path)
 
 # -------------------------------
-# Register
+# API Routes (Backend Logic)
 # -------------------------------
+
+@app.route("/health")
+def health_check():
+    return "KitabGhar Backend is running!"
+
+# Register
 @app.route("/register", methods=["POST"])
 def register():
     data = request.json
-    username = data["username"]
-    password = data["password"]
-    role = data["role"]
+    username = data.get("username")
+    password = data.get("password")
+    role = data.get("role", "user")
+
+    if not username or not password:
+        return jsonify({"message": "Username and Password required"}), 400
 
     hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
@@ -55,14 +75,12 @@ def register():
 
     return jsonify({"message": "User Registered Successfully"})
 
-# -------------------------------
 # Login
-# -------------------------------
 @app.route("/login", methods=["POST"])
 def login():
     data = request.json
-    username = data["username"]
-    password = data["password"]
+    username = data.get("username")
+    password = data.get("password")
 
     cur = mysql.connection.cursor()
     cur.execute("SELECT password, role FROM users WHERE username=%s", (username,))
@@ -79,15 +97,16 @@ def login():
     else:
         return jsonify({"message": "Invalid Password"}), 401
 
-# -------------------------------
 # Upload ebook
-# -------------------------------
 @app.route("/upload", methods=["POST"])
 def upload_ebook():
-    title = request.form["title"]
-    author = request.form["author"]
-    category = request.form["category"]
-    file = request.files["file"]
+    title = request.form.get("title")
+    author = request.form.get("author")
+    category = request.form.get("category")
+    file = request.files.get("file")
+
+    if not file:
+        return jsonify({"message": "No file uploaded"}), 400
 
     filename = secure_filename(file.filename)
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
@@ -103,9 +122,7 @@ def upload_ebook():
 
     return jsonify({"message": "E-Book Uploaded Successfully"})
 
-# -------------------------------
 # Get ebooks
-# -------------------------------
 @app.route("/ebooks", methods=["GET"])
 def get_ebooks():
     cur = mysql.connection.cursor()
@@ -124,9 +141,11 @@ def get_ebooks():
 
     return jsonify(ebooks)
 
-# -------------------------------
 # Download file
-# -------------------------------
 @app.route("/uploads/<filename>")
 def download_file(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
+if __name__ == "__main__":
+    # For local testing
+    app.run(debug=True)
