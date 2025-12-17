@@ -1,9 +1,7 @@
 function login() {
-    fetch("https://tp-6s3i.onrender.com/login", {
+    fetch("/login", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             username: document.getElementById("username").value,
             password: document.getElementById("password").value
@@ -12,11 +10,7 @@ function login() {
     .then(res => res.json())
     .then(data => {
         if (data.message === "Login Successful") {
-            if (data.role === "admin") {
-                window.location.href = "admin.html";
-            } else {
-                window.location.href = "index.html";
-            }
+            window.location.href = (data.role === "admin") ? "admin.html" : "index.html";
         } else {
             alert(data.message);
         }
@@ -24,11 +18,9 @@ function login() {
 }
 
 function register() {
-    fetch("https://tp-6s3i.onrender.com/register", {
+    fetch("/register", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             username: document.getElementById("rusername").value,
             password: document.getElementById("rpassword").value,
@@ -36,35 +28,10 @@ function register() {
         })
     })
     .then(res => res.json())
-    .then(data => alert(data.message));
-}
-
-
-function searchBooks() {
-    const bookList = document.getElementById("bookList");
-    bookList.innerHTML = "";
-
-    const books = [
-        { title: "Python Basics", author: "Guido" },
-        { title: "Machine Learning", author: "Andrew Ng" },
-        { title: "Data Science", author: "Jake" }
-    ];
-
-    books.forEach(book => {
-        const div = document.createElement("div");
-        div.className = "book";
-        div.innerHTML = `
-            <h3>${book.title}</h3>
-            <p>Author: ${book.author}</p>
-            <button>Read</button>
-            <button>Download</button>
-        `;
-        bookList.appendChild(div);
+    .then(data => {
+        alert(data.message);
+        if(data.message === "User Registered Successfully") window.location.href = "login.html";
     });
-}
-
-function uploadBook() {
-    alert("Upload functionality will be connected to backend later");
 }
 
 function uploadEbook() {
@@ -74,32 +41,31 @@ function uploadEbook() {
     formData.append("category", document.getElementById("category").value);
     formData.append("file", document.getElementById("ebook").files[0]);
 
-    fetch("https://tp-6s3i.onrender.com/upload", {
-        method: "POST",
-        body: formData
-    })
+    fetch("/upload", { method: "POST", body: formData })
     .then(res => res.json())
-    .then(data => alert(data.message));
+    .then(data => {
+        alert(data.message);
+        loadEbooks();
+    });
 }
 
 function loadEbooks() {
-    fetch("https://tp-6s3i.onrender.com/ebooks")
-        .then(res => res.json())
-        .then(data => {
-            let list = document.getElementById("bookList");
-            list.innerHTML = "";
-
-            data.forEach(book => {
-                list.innerHTML += `
-                    <div class="book">
-                        <h3>${book.title}</h3>
-                        <p><b>Author:</b> ${book.author}</p>
-                        <p><b>Category:</b> ${book.category}</p>
-                        <a href="https://tp-6s3i.onrender.com/uploads/${book.file}" target="_blank">📥 Download</a>
-                    </div>
-                `;
-            });
+    fetch("/ebooks")
+    .then(res => res.json())
+    .then(data => {
+        let list = document.getElementById("bookList");
+        if (!list) return;
+        list.innerHTML = "";
+        data.forEach(book => {
+            list.innerHTML += `
+                <div class="book">
+                    <h3>${book.title}</h3>
+                    <p><b>Author:</b> ${book.author}</p>
+                    <p><b>Category:</b> ${book.category}</p>
+                    <a href="/uploads/${book.file}" target="_blank">📥 Download</a>
+                </div>`;
         });
+    });
 }
 
-loadEbooks();
+if (document.getElementById("bookList")) loadEbooks();
