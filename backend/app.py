@@ -37,7 +37,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 @app.route("/")
 def serve_index():
     """Serves the main index.html from the frontend folder"""
-    return send_from_directory(app.static_folder, "index.html")
+    return send_from_directory(app.static_folder, "login.html")
 
 @app.route("/<path:path>")
 def serve_static(path):
