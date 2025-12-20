@@ -1,20 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>KitabGhar - Library</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KitabGhar | Library Catalog</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="nav-bar">
-    <h2 style="margin:0">📚 KitabGhar</h2>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-</div>
+    <div class="nav-bar">
+        <h2 style="margin:0">📚 KitabGhar</h2>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
 
-<h1 style="margin-top: 30px;">Available E-Books</h1>
+    <div style="width: 100%; text-align: center; margin-top: 40px;">
+        <h1 style="color: var(--primary); margin-bottom: 5px;">Available E-Books</h1>
+        <p style="color: #94a3b8;">Browse and download your favorite titles</p>
+    </div>
 
-<div id="bookList"></div>
+    <div id="bookList"></div>
 
-<script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

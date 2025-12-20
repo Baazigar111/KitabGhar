@@ -61,18 +61,42 @@ function loadEbooks() {
         let list = document.getElementById("bookList");
         if (!list) return;
         list.innerHTML = "";
+
+        // Check if the current page is admin.html
+        const isAdminPage = window.location.pathname.includes("admin.html");
+
         data.forEach(book => {
-            // Updated template literal to match new modern CSS classes
+            // Only create delete button string if we are on the admin page
+            const deleteBtn = isAdminPage ? 
+                `<button class="logout-btn" style="margin-top:10px; width:100%; background-color: #ef4444;" onclick="deleteBook(${book.id})">🗑️ Delete Book</button>` 
+                : "";
+
             list.innerHTML += `
                 <div class="book">
                     <h3>${book.title}</h3>
                     <p><b>Author:</b> ${book.author}</p>
                     <p><b>Category:</b> ${book.category}</p>
                     <a class="download-link" href="/uploads/${book.file}" target="_blank">📥 Download PDF</a>
+                    ${deleteBtn}
                 </div>`;
         });
     })
     .catch(err => console.error("Error loading books:", err));
+}
+
+// --- NEW DELETE FUNCTION ---
+function deleteBook(bookId) {
+    if (confirm("Are you sure you want to delete this book permanently?")) {
+        fetch(`/delete/${bookId}`, {
+            method: "DELETE"
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            loadEbooks(); // Refresh the list after deletion
+        })
+        .catch(err => console.error("Delete Error:", err));
+    }
 }
 
 // --- LOGOUT FUNCTION ---

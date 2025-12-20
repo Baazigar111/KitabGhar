@@ -17,22 +17,26 @@
         <h2 style="margin-bottom: 10px;">Upload New E-Book</h2>
         <p style="color: #94a3b8; margin-bottom: 20px; font-size: 0.9rem;">Add PDF files to the public library</p>
 
-        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8;">Book Title</label>
+        <label>Book Title</label>
         <input type="text" id="title" placeholder="e.g. The Great Gatsby" required>
 
-        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8;">Author Name</label>
+        <label>Author Name</label>
         <input type="text" id="author" placeholder="e.g. F. Scott Fitzgerald" required>
 
-        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8;">Category</label>
+        <label>Category</label>
         <input type="text" id="category" placeholder="e.g. Classic Literature" required>
 
-        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">PDF File</label>
+        <label style="margin-top: 10px;">PDF File</label>
         <input type="file" id="ebook" accept=".pdf" required style="border: none; padding: 5px 0;">
 
         <button onclick="uploadEbook()" style="margin-top: 20px;">🚀 Upload to Library</button>
     </div>
 
-    <h2 style="margin-top: 50px;">Live Preview of Books</h2>
+    <div style="width: 100%; text-align: center; margin-top: 60px;">
+        <h2 style="color: var(--primary);">Live Preview & Management</h2>
+        <p style="color: #94a3b8; font-size: 0.9rem;">View and delete books from the library</p>
+    </div>
+
     <div id="bookList"></div>
 
     <script src="js/script.js"></script>
