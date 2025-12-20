@@ -10,6 +10,8 @@ function login() {
     .then(res => res.json())
     .then(data => {
         if (data.message === "Login Successful") {
+            // Store role in case we need it for UI checks
+            localStorage.setItem("userRole", data.role);
             window.location.href = (data.role === "admin") ? "admin.html" : "index.html";
         } else {
             alert(data.message);
@@ -66,6 +68,13 @@ function loadEbooks() {
                 </div>`;
         });
     });
+}
+
+// --- NEW LOGOUT FUNCTION ---
+function logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = "login.html";
 }
 
 if (document.getElementById("bookList")) loadEbooks();

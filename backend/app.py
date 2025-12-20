@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, session
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
@@ -8,10 +8,12 @@ from db import mysql, init_db
 # -------------------------------
 # App setup
 # -------------------------------
-# We tell Flask that the static files (HTML/JS/CSS) are in the '../frontend' folder
 app = Flask(__name__, 
             static_folder=os.path.join(os.getcwd(), "..", "frontend"), 
             static_url_path="")
+
+# IMPORTANT: Added a secret key to enable session handling
+app.secret_key = os.getenv('SECRET_KEY', 'kitabghar_fallback_key_123')
 
 CORS(app)
 
@@ -23,7 +25,6 @@ init_db(app)
 # -------------------------------
 # Upload folder config
 # -------------------------------
-# Using absolute path for the uploads folder
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -36,12 +37,10 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 @app.route("/")
 def serve_index():
-    """Serves the main index.html from the frontend folder"""
     return send_from_directory(app.static_folder, "login.html")
 
 @app.route("/<path:path>")
 def serve_static(path):
-    """Serves other static files like login.html, css/style.css, etc."""
     return send_from_directory(app.static_folder, path)
 
 # -------------------------------
@@ -93,9 +92,21 @@ def login():
     stored_password = user[0].encode()
 
     if bcrypt.checkpw(password.encode(), stored_password):
+        # Added: Store user info in session upon successful login
+        session['logged_in'] = True
+        session['username'] = username
+        session['role'] = user[1]
+        
         return jsonify({"message": "Login Successful", "role": user[1]})
     else:
         return jsonify({"message": "Invalid Password"}), 401
+
+# --- NEW LOGOUT ROUTE ---
+@app.route("/logout", methods=["POST", "GET"])
+def logout():
+    """Clears the server-side session"""
+    session.clear()
+    return jsonify({"message": "Logout Successful"}), 200
 
 # Upload ebook
 @app.route("/upload", methods=["POST"])
@@ -147,5 +158,4 @@ def download_file(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 if __name__ == "__main__":
-    # For local testing
     app.run(debug=True)

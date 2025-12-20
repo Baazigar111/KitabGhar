@@ -10,8 +10,31 @@
             padding: 40px;
         }
 
+        /* Header and Logout Styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 450px; /* Aligned with container */
+            margin-bottom: 10px;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+
         h1 {
             color: #333;
+            margin: 0;
         }
 
         .container {
@@ -20,29 +43,34 @@
             width: 400px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
 
         input, button {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
+            box-sizing: border-box; /* Ensures padding doesn't break width */
         }
 
-        button {
+        .upload-btn {
             background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
         }
 
-        button:hover {
+        .upload-btn:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-    <h1>Admin Dashboard</h1>
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
 
     <div class="container">
         <h2>Upload E-Book (PDF)</h2>
@@ -52,7 +80,7 @@
         <input type="text" id="category" placeholder="Category" required>
         <input type="file" id="ebook" accept=".pdf" required>
 
-        <button onclick="uploadEbook()">Upload E-Book</button>
+        <button class="upload-btn" onclick="uploadEbook()">Upload E-Book</button>
     </div>
 
     <script src="js/script.js"></script>
