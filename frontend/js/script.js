@@ -10,13 +10,14 @@ function login() {
     .then(res => res.json())
     .then(data => {
         if (data.message === "Login Successful") {
-            // Store role in case we need it for UI checks
+            // Save role to identify admin later if needed
             localStorage.setItem("userRole", data.role);
             window.location.href = (data.role === "admin") ? "admin.html" : "index.html";
         } else {
             alert(data.message);
         }
-    });
+    })
+    .catch(err => console.error("Login Error:", err));
 }
 
 function register() {
@@ -33,7 +34,8 @@ function register() {
     .then(data => {
         alert(data.message);
         if(data.message === "User Registered Successfully") window.location.href = "login.html";
-    });
+    })
+    .catch(err => console.error("Registration Error:", err));
 }
 
 function uploadEbook() {
@@ -48,7 +50,8 @@ function uploadEbook() {
     .then(data => {
         alert(data.message);
         loadEbooks();
-    });
+    })
+    .catch(err => console.error("Upload Error:", err));
 }
 
 function loadEbooks() {
@@ -59,22 +62,28 @@ function loadEbooks() {
         if (!list) return;
         list.innerHTML = "";
         data.forEach(book => {
+            // Updated template literal to match new modern CSS classes
             list.innerHTML += `
                 <div class="book">
                     <h3>${book.title}</h3>
                     <p><b>Author:</b> ${book.author}</p>
                     <p><b>Category:</b> ${book.category}</p>
-                    <a href="/uploads/${book.file}" target="_blank">📥 Download</a>
+                    <a class="download-link" href="/uploads/${book.file}" target="_blank">📥 Download PDF</a>
                 </div>`;
         });
+    })
+    .catch(err => console.error("Error loading books:", err));
+}
+
+// --- LOGOUT FUNCTION ---
+function logout() {
+    // Clear both server-side and client-side sessions
+    fetch("/logout").then(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = "login.html";
     });
 }
 
-// --- NEW LOGOUT FUNCTION ---
-function logout() {
-    localStorage.clear();
-    sessionStorage.clear();
-    window.location.href = "login.html";
-}
-
+// Automatically load books if the bookList div exists on the page
 if (document.getElementById("bookList")) loadEbooks();

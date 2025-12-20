@@ -2,86 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>KitabGhar Admin Panel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            padding: 40px;
-        }
-
-        /* Header and Logout Styling */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 450px; /* Aligned with container */
-            margin-bottom: 10px;
-        }
-
-        .logout-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
-
-        h1 {
-            color: #333;
-            margin: 0;
-        }
-
-        .container {
-            background: white;
-            padding: 25px;
-            width: 400px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 20px;
-        }
-
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            box-sizing: border-box; /* Ensures padding doesn't break width */
-        }
-
-        .upload-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .upload-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KitabGhar | Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <div class="header">
-        <h1>Admin Dashboard</h1>
+    <div class="nav-bar">
+        <h2 style="margin:0">📚 KitabGhar Admin</h2>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
 
     <div class="container">
-        <h2>Upload E-Book (PDF)</h2>
+        <h2 style="margin-bottom: 10px;">Upload New E-Book</h2>
+        <p style="color: #94a3b8; margin-bottom: 20px; font-size: 0.9rem;">Add PDF files to the public library</p>
 
-        <input type="text" id="title" placeholder="Book Title" required>
-        <input type="text" id="author" placeholder="Author Name" required>
-        <input type="text" id="category" placeholder="Category" required>
-        <input type="file" id="ebook" accept=".pdf" required>
+        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8;">Book Title</label>
+        <input type="text" id="title" placeholder="e.g. The Great Gatsby" required>
 
-        <button class="upload-btn" onclick="uploadEbook()">Upload E-Book</button>
+        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8;">Author Name</label>
+        <input type="text" id="author" placeholder="e.g. F. Scott Fitzgerald" required>
+
+        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8;">Category</label>
+        <input type="text" id="category" placeholder="e.g. Classic Literature" required>
+
+        <label style="display: block; text-align: left; font-size: 0.8rem; color: #94a3b8; margin-top: 10px;">PDF File</label>
+        <input type="file" id="ebook" accept=".pdf" required style="border: none; padding: 5px 0;">
+
+        <button onclick="uploadEbook()" style="margin-top: 20px;">🚀 Upload to Library</button>
     </div>
+
+    <h2 style="margin-top: 50px;">Live Preview of Books</h2>
+    <div id="bookList"></div>
 
     <script src="js/script.js"></script>
 

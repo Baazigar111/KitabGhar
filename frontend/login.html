@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KitabGhar | Login</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h2>📚 KitabGhar Login</h2>
+    <div class="container">
+        <h1 style="margin-bottom: 5px;">📚 KitabGhar</h1>
+        <p style="color: #94a3b8; margin-bottom: 25px;">Please enter your credentials</p>
 
-<input type="text" id="username" placeholder="Enter Username">
-<br><br>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
 
-<input type="password" id="password" placeholder="Enter Password">
-<br><br>
+        <button onclick="login()">Login</button>
 
-<button onclick="login()">Login</button>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">
+            Don't have an account?  
+            <a href="register.html" style="color: #6366f1; text-decoration: none; font-weight: bold;">Register here</a>
+        </p>
+    </div>
 
-<p>
-    Don't have an account?  
-    <a href="register.html">Register here</a>
-</p>
-
-<script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

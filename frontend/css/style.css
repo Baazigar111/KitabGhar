@@ -1,33 +1,129 @@
-body {
-    font-family: Arial;
-    text-align: center;
-    background-color: #f4f4f4;
-    margin-top: 100px;
+:root {
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --danger: #ef4444;
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --text: #f8fafc;
 }
 
-input {
-    padding: 10px;
-    width: 250px;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Header & Navigation */
+.nav-bar {
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg);
+    box-sizing: border-box;
+    border-bottom: 1px solid #334155;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Containers */
+.container {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    margin-top: 50px;
+}
+
+/* Inputs & Buttons */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: white;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary);
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary);
     color: white;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-top: 10px;
 }
 
+button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.logout-btn {
+    background-color: var(--danger);
+    width: auto;
+    padding: 8px 16px;
+}
+
+/* Book Grid Layout */
 #bookList {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 40px;
+    width: 90%;
+    max-width: 1200px;
 }
 
 .book {
-    background: white;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px gray;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #334155;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
+
+.book:hover {
+    transform: scale(1.03);
+    border-color: var(--primary);
+}
+
+.book h3 { margin: 0; color: var(--primary); }
+.book p { margin: 0; font-size: 0.9rem; color: #94a3b8; }
+
+.download-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px;
+    background: #334155;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.download-link:hover { background: var(--primary); }

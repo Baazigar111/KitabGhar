@@ -1,32 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KitabGhar | Register</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h2>📚 KitabGhar Registration</h2>
+    <div class="container">
+        <h1 style="margin-bottom: 5px;">Join KitabGhar</h1>
+        <p style="color: #94a3b8; margin-bottom: 25px;">Create your library account</p>
 
-<input type="text" id="rusername" placeholder="Enter Username">
-<br><br>
+        <input type="text" id="rusername" placeholder="Choose Username">
+        <input type="password" id="rpassword" placeholder="Create Password">
 
-<input type="password" id="rpassword" placeholder="Enter Password">
-<br><br>
+        <label style="display: block; text-align: left; margin-top: 10px; font-size: 0.8rem; color: #94a3b8;">Select Account Type:</label>
+        <select id="role">
+            <option value="user">Standard User</option>
+            <option value="admin">Administrator</option>
+        </select>
 
-<select id="role">
-    <option value="user">User</option>
-    <option value="admin">Admin</option>
-</select>
-<br><br>
+        <button onclick="register()">Register</button>
 
-<button onclick="register()">Register</button>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #94a3b8;">
+            Already have an account?  
+            <a href="login.html" style="color: #6366f1; text-decoration: none; font-weight: bold;">Login here</a>
+        </p>
+    </div>
 
-<p>
-    Already have an account?  
-    <a href="login.html">Login here</a>
-</p>
-
-<script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
