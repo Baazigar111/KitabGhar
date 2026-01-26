@@ -36,7 +36,7 @@ KITABGHAR/
 │   ├── app.py           # Flask server & API routes
 │   ├── db.py            # MySQL database configuration
 │   ├── uploads/         # Directory for stored PDF files
-│   └── requirements.txt # Python dependencies
+│   └── Procfile         # Deployment config (located here)
 ├── frontend/
 │   ├── css/
 │   │   └── style.css    # Modern Dark UI styling
@@ -46,4 +46,70 @@ KITABGHAR/
 │   ├── admin.html       # Admin management page
 │   ├── login.html       # Entry portal
 │   └── register.html    # New user registration
-└── Procfile             # Deployment config for Render
+└── requirements.txt     # Python dependencies (located in root)
+
+⚙️ Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/your-username/KitabGhar.git
+cd KitabGhar
+
+2️⃣ Setup Backend
+
+Install the required dependencies from the root directory:
+
+pip install -r requirements.txt
+
+3️⃣ Database Configuration
+
+Make sure your Aiven MySQL instance is running, then create the tables below:
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') DEFAULT 'user'
+);
+
+CREATE TABLE ebooks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    author VARCHAR(100),
+    category VARCHAR(50),
+    file_path VARCHAR(255)
+);
+
+4️⃣ Environment Variables
+
+On your hosting platform (Render / Heroku), set the following environment variables:
+
+MYSQL_HOST
+MYSQL_USER
+MYSQL_PASSWORD
+MYSQL_DB
+MYSQL_PORT
+SECRET_KEY
+
+
+🔐 SECRET_KEY → Any random long string
+
+☁️ Deployment Note (Render)
+
+When deploying to Render:
+
+Connect your GitHub repository
+
+Build Command
+
+pip install -r requirements.txt
+
+
+Start Command
+
+gunicorn --chdir backend app:app
+
+
+📌 This tells Render to:
+
+Use requirements.txt from the root
+
+Look for app.py inside the backend folder
